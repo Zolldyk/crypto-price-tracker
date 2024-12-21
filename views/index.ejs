@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css/">
+    <title>Crypto-price-tracker</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Crypto Price Tracker</h1>
+        
+        <!--Search form-->
+        <form action="/search-crypto" method="get">
+            <input type="text" name="coinId" placeholder="Enter cryptocurrency ID (e.g., bitcoin)" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Error handling-->
+        <% if (locals.error) { %>
+            <div class="error-message"><%= error %></div>
+        <% } %>
+
+        <!--Display-->
+        <% if (locals.cryptocurrencies && cryptocurrencies.length > 0) { %>
+            <div class="crypto-list">
+                <% cryptocurrencies.forEach(function(crypto) { %>
+                    <div class="crypto-card">
+                        <img src="<%= crypto.image %>" alt="<%= crypto.name %> logo" class="crypto-logo">
+                        <h2><%= crypto.name %> (<%= crypto.symbol.toUpperCase() %>)</h2>
+                        <p>Current Price: $<%= crypto.current_price.toLocaleString() %></p>
+                        <p>Market Cap: $<%= crypto.market_cap.toLocaleString() %></p>
+                        <p>24h Price Change: 
+                            <span class="<%= crypto.price_change_percentage_24h >= 0 ? 'positive' : 'negative' %>">
+                                <%= crypto.price_change_percentage_24h.toFixed(2) %>%
+                            </span>
+                        </p>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
